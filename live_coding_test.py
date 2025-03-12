@@ -59,13 +59,13 @@ def vector_database():
 
     # Adding Dcuments
     ids = [i for i in range(len(documents))]
-    document_1 = Document(page_content=documents[0], metadata={"baz": "bar"})
-    document_2 = Document(page_content=documents[1], metadata={"bar": "baz"})
+    document_1 = Document(page_content=documents[0])
+    document_2 = Document(page_content=documents[1])
     document_3 = Document(page_content=documents[2])
-    document_4 = Document(page_content="i will be deleted :(")
-    document_5 = Document(page_content="i will be deleted :(")
+    document_4 = Document(page_content=documents[3])
+    document_5 = Document(page_content=documents[4])
 
-    documents = [document_1, document_2, document_3]
+    documents = [document_1, document_2, document_3, document_4, document_5]
     vector_store.add_documents(documents=documents, ids=ids)
     return vector_store
 
