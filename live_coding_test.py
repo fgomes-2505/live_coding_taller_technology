@@ -76,7 +76,7 @@ def qa_chain(model, query, vector_store):
     """
     # Getting OpenAI API Key
     BASE_DIR = Path(__file__).resolve().parent.parent
-    load_dotenv(str(BASE_DIR) + '/')
+    load_dotenv(str(BASE_DIR) + '/live_coding_taller_technology/.env')
     api_key = os.getenv("API_KEY")
     os.environ['OPENAI_API_KEY'] = api_key
 
@@ -87,7 +87,7 @@ def qa_chain(model, query, vector_store):
     )
 
     # Retrieving Information RAG
-    retriever = vector_store.as_retriever(fetch_k=3)
+    retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 
     system_prompt = """
     You are someone who answers the client's questions. Answer kindly and
@@ -116,12 +116,18 @@ def qa_chain(model, query, vector_store):
     # Obtendo Resposta
     try:
         response = chain.invoke({'input': query})
-        return response
+        final_response = (
+            f"AI Response: {response.get('answer')}\n"
+            f"Number of Retrieved Documents: {len(response.get('context'))}\n"
+            f"Retrieved Documents: {response.get('context')}"
+        )
+
+        return final_response
     except Exception as e:
         return e
 
 if __name__ == '__main__':
-    question = input('What is you question')
+    question = input('What is you question?')
     rag = vector_database()
     answer = qa_chain('gpt-4o-mini', question, rag)
     print(answer)
